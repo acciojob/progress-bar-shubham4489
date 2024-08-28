@@ -1,27 +1,47 @@
-//your JS code here. If required.
-const container = document.getElementById("circle-container");
+const circles = document.querySelectorAll('.circle');
+const prevButton = document.getElementById('prev');
+const nextButton = document.getElementById('next');
 
-const NumberOfCircles = 5;
+let currentActive = 1;
 
-function createCircle(id){
- const circle =document.createElement("div");
-	circle.classList.add('circle');
-	circle.id('circle-${id}');
-	return circle;
- }
- function  createLine(){
-	 const line = document.CreateElement("div");
-	 line.classList.add('line');
-	 return line;
- }
-   for(let i=1; i<=NumberOfCircles; i++){
-	   const circle = createCircle(i);
-	   container.appendChild(circle);
+nextButton.addEventListener('click', () => {
+    currentActive++;
 
+    if (currentActive > circles.length) {
+        currentActive = circles.length;
+    }
 
-	   if(i<NumberOfCircles){
-		   const line = createLine();
-		   container.appneChild(line);
-		   
-	   }
-   }
+    update();
+});
+
+prevButton.addEventListener('click', () => {
+    currentActive--;
+
+    if (currentActive < 1) {
+        currentActive = 1;
+    }
+
+    update();
+});
+
+function update() {
+    circles.forEach((circle, idx) => {
+        if (idx < currentActive) {
+            circle.classList.add('active');
+        } else {
+            circle.classList.remove('active');
+        }
+    });
+
+    if (currentActive === 1) {
+        prevButton.disabled = true;
+    } else {
+        prevButton.disabled = false;
+    }
+
+    if (currentActive === circles.length) {
+        nextButton.disabled = true;
+    } else {
+        nextButton.disabled = false;
+    }
+}
